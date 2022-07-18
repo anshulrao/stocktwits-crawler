@@ -10,12 +10,12 @@ Usage:
 
 """
 
-import requests
+from datetime import datetime
 import json
 import pandas as pd
-from datetime import datetime
+import requests
 import sys
-
+import warnings
 
 URL = f"https://api.stocktwits.com/api/2/streams/symbol/%s.X.json"
 
@@ -68,9 +68,13 @@ def get_streams(symbol, start_dt, end_dt):
     tweets = read_messages(data, None)
 
     while min(tweets['date']) >= int(start_dt):
-        response = requests.get(url + f"?max={data['cursor']['since']}")
-        data = json.loads(response.text)
-        tweets = read_messages(data, tweets)
+        new_url = url + f"?max={data['cursor']['since']}"
+        response = requests.get(new_url)
+        try:
+            data = json.loads(response.text)
+            tweets = read_messages(data, tweets)
+        except json.decoder.JSONDecodeError:
+            warnings.warn(f"{new_url} JSON response could not be decoded.")
 
     df = pd.DataFrame(tweets)
     df = df[(df['date'] >= int(start_dt)) & (df['date'] <= int(end_dt))]
@@ -96,10 +100,14 @@ def get_latest_streams(symbol, count):
 
     for i in range(count // 3):
         # making 'max' the 'since' of latest
-        # we'll go back from the latest url every time using 'max' to get 1000 latest tweets.
-        response = requests.get(url + f"?max={data['cursor']['since']}")
-        data = json.loads(response.text)
-        tweets = read_messages(data, tweets)
+        # we'll go back from the latest url every time using 'max' to get latest tweets.
+        new_url = url + f"?max={data['cursor']['since']}"
+        response = requests.get(new_url)
+        try:
+            data = json.loads(response.text)
+            tweets = read_messages(data, tweets)
+        except json.decoder.JSONDecodeError:
+            warnings.warn(f"{new_url} JSON response could not be decoded.")
 
     df = pd.DataFrame(tweets)
     df.drop_duplicates(inplace=True)
