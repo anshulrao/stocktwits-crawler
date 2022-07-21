@@ -1,6 +1,4 @@
-# Download Cryptocurrency Data
-
-## StockTwits
+# Download StockTwits Data
 
 ### Usage:
 1. Get the top 1000 latest streams of a symbol:-
