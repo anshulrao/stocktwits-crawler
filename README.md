@@ -19,6 +19,6 @@
 
    `> python3 stocktwits_streams.py history AAAU 2018-01-01 2018-12-31 175000000`
 
-   *NOTE: By controlling the max_id to begin from, we can reduce the time
-   taken for the script to execute for older time periods.*
+   *NOTE: By controlling the id, we can reduce the time taken for the script to 
+   execute for older time periods.*
    
