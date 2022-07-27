@@ -1,4 +1,8 @@
+#!/usr/bin/env python3
+
 """
+Download streams/tweets of stocks/symbols from StockTwits.
+
 Usage:
 1. Get the top 1000 latest streams of a symbol:-
     > python3 stocktwits_streams.py latest BTC 1000
@@ -14,6 +18,9 @@ Usage:
 
     NOTE: By controlling the id, we can reduce the time taken for the script
     to execute for older time periods.
+
+
+Author: Anshul Rao (@anshulrao)
 
 """
 
