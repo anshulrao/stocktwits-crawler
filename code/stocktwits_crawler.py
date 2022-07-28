@@ -5,10 +5,10 @@ Download streams/tweets of stocks/symbols from StockTwits.
 
 Usage:
 1. Get the top 1000 latest streams of a symbol:-
-    > python3 stocktwits_crawler.py latest BTC 1000
+    > python3 stocktwits_crawler.py latest AA 1000
 
 2. Get the streams for a symbol b/w two dates:-
-    > python3 stocktwits_crawler.py history ETH 2022-07-10 2022-07-12
+    > python3 stocktwits_crawler.py history AA 2022-07-10 2022-07-12
 
     NOTE: The later the start_date, the more the time taken since this
     program reads the tweets backwards.
