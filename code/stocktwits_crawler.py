@@ -96,13 +96,21 @@ def get_streams(symbol, start_dt, end_dt, max_id=None):
         if max_id is None:
             break
         new_url = url + f"?max={max_id}"
-        response = requests.get(new_url)
         try:
-            data = json.loads(response.text)
-            tweets = read_messages(data, tweets)
-        except json.decoder.JSONDecodeError:
-            logging.warning(f"{new_url} JSON response could not be decoded.")
-            warnings.warn(f"{new_url} JSON response could not be decoded.")
+            response = requests.get(new_url)
+            try:
+                data = json.loads(response.text)
+                tweets = read_messages(data, tweets)
+            except json.decoder.JSONDecodeError:
+                logging.warning(f"{new_url} JSON response could not be decoded.")
+                warnings.warn(f"{new_url} JSON response could not be decoded.")
+                time.sleep(5)
+        except requests.exceptions.ProxyError:
+            print(f"{new_url} throwing proxy error. Sleeping for sometime.")
+            time.sleep(600)
+        except requests.exceptions.SSLError:
+            print(f"{new_url} throwing SSL error. Sleeping for sometime.")
+            time.sleep(600)
         if tweets is not None and min(tweets['date']) > int(end_dt):
             tweets = None
 
